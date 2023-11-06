@@ -1,0 +1,48 @@
+server:
+  port: 9092
+spring:
+  application:
+    name: notification
+  datasource:
+    url: jdbc:postgresql://localhost:5432/notification?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull
+    username: 'postgres'
+    password: 'changeme'
+  zipkin:
+    base-url: http://localhost:9411
+
+  # ===============================
+  # = JPA / HIBERNATE
+  # ===============================
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        generate_statistics: false
+        temp:
+          use_jdbc_metadata_defaults: false
+  # ===============================
+  # = eureka server
+  # ===============================
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+    enabled: true
+  # ===============================
+  # = rabbit mq
+  # ===============================
+rabbitmq:
+  exchanges:
+    internal: internal.exchange
+  queues:
+    notification: notification.queue
+  routing-keys:
+    internal-notification: internal.notification.routing-key

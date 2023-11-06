@@ -1,0 +1,58 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: customer
+  # Configure the server to run with SSL/TLS and using HTTPS
+  #    active: https
+  # ===============================
+  # = DATA SOURCE
+  # ===============================
+  # If you want to use mysql, you could uncomment line below.
+  # And use the mysql dependency in the 'build.gradle'.
+  # Set here configurations for the database connection
+  datasource:
+    username: 'postgres'
+    url: jdbc:postgresql://localhost:5432/customer?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull
+    password: 'changeme'
+    hikari:
+      connection-test-query: SELECT 1
+
+  # ===============================
+  # = JPA / HIBERNATE
+  # ===============================
+
+  # Use 'spring.jpa.properties.*' for Hibernate native properties (the prefix is
+  # stripped before adding them to the entity manager).
+
+  # Show or not log for each sql query
+  jpa:
+    show-sql: true
+    # Hibernate ddl auto (create, create-drop, update): with "update" the database
+    # schema will be automatically updated accordingly to java entities found in
+    # the project
+    hibernate:
+      ddl-auto: update
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        generate_statistics: false
+        temp:
+          use_jdbc_metadata_defaults: false
+
+  zipkin:
+    base-url: http://localhost:9411
+
+  rabbitmq:
+    addresses: localhost:5672
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
