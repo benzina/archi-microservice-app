@@ -1,0 +1,7 @@
+clients:
+  customer:
+    url: http://localhost:9090
+  fraud:
+    url: http://localhost:9091
+  notification:
+    url: http://localhost:9092
