@@ -1,7 +1,7 @@
 clients:
   customer:
-    url: http://localhost:9090
+    url: ${CLIENTS_CUSTOMER_URL:http://localhost:9090}
   fraud:
-    url: http://localhost:9091
+    url: ${CLIENTS_FRAUD_URL:http://localhost:9091}
   notification:
-    url: http://localhost:9092
+    url: ${CLIENTS_NOTIFICATION_URL:http://localhost:9092}

@@ -4,15 +4,28 @@ import amqp.RabbitMQMessageProducer;
 import clients.fraud.FraudCheckResponse;
 import clients.fraud.FraudClient;
 import clients.notification.NotificationRequest;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
 public class CustomerService {
     private final CustomerRepository customerRepository;
-   private final FraudClient fraudClient;
+    private final FraudClient fraudClient;
     private final RabbitMQMessageProducer rabbitMQMessageProducer;
+    @Value("${rabbitmq.exchanges.internal}")
+    private String internalExchange;
+    @Value("${rabbitmq.routing-keys.internal-notification}")
+    private String internalNotificationRoutingKey;
+
+    public CustomerService(
+            CustomerRepository customerRepository,
+            FraudClient fraudClient,
+            RabbitMQMessageProducer rabbitMQMessageProducer) {
+        this.customerRepository = customerRepository;
+        this.fraudClient = fraudClient;
+        this.rabbitMQMessageProducer = rabbitMQMessageProducer;
+    }
+
     public void registerCustomer(CustomerRegistrationRequest request) {
         Customer customer = Customer.builder()
                 .firstName(request.firstName())
@@ -37,8 +50,8 @@ public class CustomerService {
         );
         rabbitMQMessageProducer.publish(
                 notificationRequest,
-                "internal.exchange",
-                "internal.notification.routing-key"
+                internalExchange,
+                internalNotificationRoutingKey
         );
     }
 }

@@ -8,8 +8,6 @@
     </parent>
     <groupId>org.archi-microservice-app</groupId>
     <artifactId>amqp</artifactId>
-    <name>Archetype - amqp</name>
-    <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
